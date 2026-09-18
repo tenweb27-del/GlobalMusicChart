@@ -1,226 +1,891 @@
-
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Global Music Chart</title>
+
+<title>Global Music Chart | GMC</title>
 
 <style>
 *{
     margin:0;
     padding:0;
     box-sizing:border-box;
-    font-family:Arial, Helvetica, sans-serif;
+}
+
+:root{
+    --bg:#050505;
+    --panel:#101010;
+    --panel-2:#151515;
+    --border:#242424;
+    --text:#ffffff;
+    --muted:#999999;
+    --yellow:#FFD400;
+    --green:#39ff88;
+    --red:#ff4d5a;
+    --blue:#5ca8ff;
+}
+
+html{
+    scroll-behavior:smooth;
 }
 
 body{
-    background:#080808;
-    color:white;
+    background:var(--bg);
+    color:var(--text);
+    font-family:Arial, Helvetica, sans-serif;
+    line-height:1.5;
 }
 
+/* =========================
+   NAVIGATION
+========================= */
+
 nav{
+    position:sticky;
+    top:0;
+    z-index:1000;
+
     display:flex;
     justify-content:space-between;
     align-items:center;
-    padding:20px 50px;
-    border-bottom:1px solid #222;
+
+    padding:18px 5%;
+
+    background:rgba(5,5,5,.94);
+    backdrop-filter:blur(12px);
+
+    border-bottom:1px solid var(--border);
 }
 
 .logo{
     font-size:28px;
-    font-weight:bold;
-    color:#FFD700;
+    font-weight:900;
+    letter-spacing:-1px;
+    color:var(--yellow);
+}
+
+.logo span{
+    color:white;
 }
 
 nav ul{
     display:flex;
-    list-style:none;
     gap:30px;
+    list-style:none;
 }
 
 nav a{
-    color:white;
+    color:#ddd;
     text-decoration:none;
+    font-size:14px;
+    font-weight:700;
+    transition:.2s;
 }
 
+nav a:hover{
+    color:var(--yellow);
+}
+
+/* =========================
+   HERO
+========================= */
+
 .hero{
-    min-height:70vh;
+    width:90%;
+    max-width:1200px;
+    min-height:600px;
+
+    margin:35px auto;
+
+    position:relative;
+    overflow:hidden;
+
+    border:1px solid var(--border);
+    border-radius:28px;
+
     display:flex;
-    align-items:center;
-    justify-content:center;
-    text-align:center;
-    padding:40px;
+    align-items:flex-end;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(0,0,0,.95) 0%,
+            rgba(0,0,0,.72) 45%,
+            rgba(0,0,0,.25) 100%
+        ),
+        linear-gradient(
+            135deg,
+            #171717,
+            #080808
+        );
+}
+
+.hero-content{
+    width:100%;
+    padding:70px;
+}
+
+.hero-label{
+    display:inline-block;
+
+    padding:7px 12px;
+    margin-bottom:18px;
+
+    border-radius:20px;
+
+    background:var(--yellow);
+    color:#000;
+
+    font-size:12px;
+    font-weight:900;
+    letter-spacing:1px;
 }
 
 .hero h1{
-    font-size:64px;
+    font-size:clamp(42px,7vw,86px);
+    line-height:.95;
+    max-width:850px;
+    letter-spacing:-4px;
     margin-bottom:20px;
 }
 
-.hero p{
+.hero-artist{
     color:#bbb;
-    max-width:700px;
-    margin:auto;
-    line-height:1.7;
+    font-size:20px;
     margin-bottom:30px;
+}
+
+.hero-buttons{
+    display:flex;
+    gap:12px;
+    flex-wrap:wrap;
 }
 
 .btn{
     display:inline-block;
-    background:#FFD700;
-    color:black;
-    padding:15px 35px;
-    border-radius:40px;
+
+    padding:14px 26px;
+
+    border-radius:30px;
+
     text-decoration:none;
-    font-weight:bold;
+    font-weight:800;
+
+    background:var(--yellow);
+    color:#000;
+
+    transition:.2s;
 }
 
-.status-card{
-    width:90%;
-    max-width:600px;
-    margin:40px auto;
-    background:#121212;
-    padding:30px;
-    border-radius:20px;
-    border:1px solid #222;
+.btn:hover{
+    transform:translateY(-2px);
 }
 
-.chart-section{
+.btn-dark{
+    background:#202020;
+    color:white;
+    border:1px solid #333;
+}
+
+/* =========================
+   MAIN CONTENT
+========================= */
+
+.container{
     width:90%;
-    max-width:900px;
-    margin:60px auto;
+    max-width:1200px;
+    margin:80px auto;
+}
+
+.section-heading{
+    display:flex;
+    justify-content:space-between;
+    align-items:end;
+
+    margin-bottom:25px;
+}
+
+.section-heading h2{
+    font-size:32px;
+    letter-spacing:-1px;
+}
+
+.section-heading p{
+    color:var(--muted);
+    font-size:14px;
+}
+
+/* =========================
+   API STATUS
+========================= */
+
+.status{
+    display:inline-flex;
+    align-items:center;
+    gap:9px;
+
+    margin-top:8px;
+
+    color:var(--muted);
+    font-size:13px;
+}
+
+.status-dot{
+    width:8px;
+    height:8px;
+
+    border-radius:50%;
+
+    background:#666;
+}
+
+/* =========================
+   TOP 10
+========================= */
+
+.chart-list{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
 }
 
 .chart-card{
-    display:flex;
-    justify-content:space-between;
+    display:grid;
+    grid-template-columns:70px 60px 1fr auto;
+
     align-items:center;
-    padding:18px;
-    margin-bottom:12px;
-    background:#121212;
-    border:1px solid #222;
-    border-radius:15px;
+
+    gap:15px;
+
+    padding:14px 18px;
+
+    background:var(--panel);
+
+    border:1px solid var(--border);
+    border-radius:16px;
+
+    transition:.2s;
 }
 
-footer{
-    text-align:center;
-    padding:40px;
+.chart-card:hover{
+    background:var(--panel-2);
+    border-color:#333;
+    transform:translateX(3px);
+}
+
+.rank{
+    font-size:24px;
+    font-weight:900;
+    color:#555;
+}
+
+.rank.first{
+    color:var(--yellow);
+}
+
+.thumb{
+    width:52px;
+    height:52px;
+
+    border-radius:10px;
+
+    background:
+        linear-gradient(135deg,#333,#111);
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:18px;
+    font-weight:900;
+
     color:#777;
+}
+
+.song-name{
+    font-size:17px;
+    font-weight:800;
+}
+
+.artist-name{
+    margin-top:3px;
+    color:#888;
+    font-size:13px;
+}
+
+.trend{
+    font-size:20px;
+}
+
+.trend.up{
+    color:var(--green);
+}
+
+.trend.down{
+    color:var(--red);
+}
+
+.trend.steady{
+    color:var(--blue);
+}
+
+/* =========================
+   FEATURE GRID
+========================= */
+
+.feature-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:15px;
+    margin-top:70px;
+}
+
+.feature-card{
+    min-height:210px;
+
+    padding:25px;
+
+    border-radius:20px;
+
+    background:var(--panel);
+
+    border:1px solid var(--border);
+}
+
+.feature-card .number{
+    color:var(--yellow);
+    font-size:12px;
+    font-weight:900;
+    letter-spacing:1px;
+}
+
+.feature-card h3{
+    margin-top:35px;
+    font-size:22px;
+}
+
+.feature-card p{
+    margin-top:10px;
+    color:#888;
+    font-size:14px;
+}
+
+/* =========================
+   FOOTER
+========================= */
+
+footer{
+    margin-top:100px;
+
+    padding:50px 5%;
+
+    border-top:1px solid var(--border);
+
+    color:#666;
+    text-align:center;
+
+    font-size:13px;
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width:800px){
+
+    nav{
+        padding:16px 5%;
+    }
+
+    nav ul{
+        gap:14px;
+    }
+
+    nav a{
+        font-size:12px;
+    }
+
+    .hero{
+        min-height:500px;
+        margin-top:20px;
+        border-radius:20px;
+    }
+
+    .hero-content{
+        padding:35px 25px;
+    }
+
+    .hero h1{
+        letter-spacing:-2px;
+    }
+
+    .hero-artist{
+        font-size:17px;
+    }
+
+    .container{
+        margin:60px auto;
+    }
+
+    .section-heading{
+        align-items:flex-start;
+        flex-direction:column;
+        gap:8px;
+    }
+
+    .chart-card{
+        grid-template-columns:40px 48px 1fr auto;
+        gap:10px;
+        padding:12px;
+    }
+
+    .rank{
+        font-size:18px;
+    }
+
+    .thumb{
+        width:45px;
+        height:45px;
+    }
+
+    .song-name{
+        font-size:14px;
+    }
+
+    .artist-name{
+        font-size:12px;
+    }
+
+    .feature-grid{
+        grid-template-columns:1fr;
+    }
+}
+
+@media(max-width:480px){
+
+    nav ul{
+        gap:9px;
+    }
+
+    nav a{
+        font-size:11px;
+    }
+
+    .logo{
+        font-size:22px;
+    }
+
+    .hero{
+        min-height:460px;
+    }
+
+    .hero h1{
+        font-size:48px;
+    }
+
+    .chart-card{
+        grid-template-columns:32px 42px 1fr 25px;
+    }
+
+    .trend{
+        font-size:17px;
+    }
 }
 </style>
 </head>
 
 <body>
 
+<!-- =========================
+     NAVIGATION
+========================= -->
+
 <nav>
-    <div class="logo">GMC</div>
+
+    <div class="logo">
+        GMC<span>.</span>
+    </div>
 
     <ul>
-        <li><a href="#">Charts</a></li>
-        <li><a href="#">Arena</a></li>
-        <li><a href="#">News</a></li>
-        <li><a href="#">Artists</a></li>
+        <li><a href="#charts">Charts</a></li>
+        <li><a href="#arena">Arena</a></li>
+        <li><a href="#news">News</a></li>
+        <li><a href="#artists">Artists</a></li>
     </ul>
+
 </nav>
 
+
+<!-- =========================
+     GLOBAL #1 HERO
+========================= -->
+
 <section class="hero">
-<div>
-    <h1>Global Music Chart</h1>
 
-    <p>
-        The world's transparent music intelligence platform for artists,
-        fans, labels and culture.
-    </p>
+    <div class="hero-content">
 
-    <a class="btn" href="#">Explore Charts</a>
-</div>
+        <div class="hero-label">
+            GLOBAL #1
+        </div>
+
+        <h1 id="hero-song">
+            Loading...
+        </h1>
+
+        <div class="hero-artist" id="hero-artist">
+            Loading artist...
+        </div>
+
+        <div class="hero-buttons">
+
+            <a href="#" class="btn">
+                Listen Now
+            </a>
+
+            <a href="#charts" class="btn btn-dark">
+                View Charts
+            </a>
+
+        </div>
+
+        <div class="status">
+
+            <span
+                id="status-dot"
+                class="status-dot">
+            </span>
+
+            <span id="status">
+                Connecting to GMC API...
+            </span>
+
+        </div>
+
+    </div>
+
 </section>
 
-<div class="status-card">
-    <h2>Live API Status</h2>
-    <p id="status">Checking server...</p>
-</div>
 
-<section class="chart-section">
-    <h2 style="color:#FFD700;margin-bottom:25px;">Global Top 10</h2>
+<!-- =========================
+     GLOBAL TOP 10
+========================= -->
 
-    <div id="chart-list"></div>
-</section>
+<main id="charts" class="container">
+
+    <div class="section-heading">
+
+        <div>
+
+            <h2>
+                Global Top 10
+            </h2>
+
+            <p>
+                The world's leading songs, ranked by GMC.
+            </p>
+
+        </div>
+
+        <div>
+            <span style="color:#FFD400;font-weight:800;">
+                LIVE CHART
+            </span>
+        </div>
+
+    </div>
+
+
+    <div
+        id="chart-list"
+        class="chart-list">
+
+        <div class="chart-card">
+            Loading chart...
+        </div>
+
+    </div>
+
+
+    <!-- =========================
+         FEATURED AREAS
+    ========================= -->
+
+    <div class="feature-grid">
+
+        <div id="arena" class="feature-card">
+
+            <div class="number">
+                GMC ARENA
+            </div>
+
+            <h3>
+                Discover what's moving culture.
+            </h3>
+
+            <p>
+                Explore artists, sounds, movements and
+                conversations shaping global music.
+            </p>
+
+        </div>
+
+
+        <div id="news" class="feature-card">
+
+            <div class="number">
+                GMC NEWS
+            </div>
+
+            <h3>
+                Music. Culture. Intelligence.
+            </h3>
+
+            <p>
+                Breaking releases, industry stories,
+                interviews and entertainment coverage.
+            </p>
+
+        </div>
+
+
+        <div id="artists" class="feature-card">
+
+            <div class="number">
+                GMC ARTISTS
+            </div>
+
+            <h3>
+                Your music deserves to be measured.
+            </h3>
+
+            <p>
+                Artist profiles, chart performance and
+                opportunities for emerging talent.
+            </p>
+
+        </div>
+
+    </div>
+
+</main>
+
+
+<!-- =========================
+     FOOTER
+========================= -->
 
 <footer>
-Global Music Chart — Foundation Day v0.2
+
+    Global Music Chart — Foundation Day v0.3
+
 </footer>
 
+
 <script>
+
+/* =========================
+   GMC API
+========================= */
+
+const API_BASE =
+    "http://127.0.0.1:8000";
+
+
+/* =========================
+   CHECK BACKEND
+========================= */
+
 async function checkServer(){
 
     try{
 
-        const response=await fetch("http://127.0.0.1:8000/health");
-        const data=await response.json();
+        const response =
+            await fetch(`${API_BASE}/health`);
 
-        document.getElementById("status").innerHTML=
-        "Backend Status: "+data.status+" ✅";
+        if(!response.ok){
+            throw new Error("Server error");
+        }
 
-    }catch{
+        const data =
+            await response.json();
 
-        document.getElementById("status").innerHTML=
-        "Backend Offline ❌";
+        document.getElementById("status").textContent =
+            "GMC API Online";
+
+        document.getElementById("status-dot").style.background =
+            "#39ff88";
+
+    }
+
+    catch(error){
+
+        document.getElementById("status").textContent =
+            "GMC API Offline";
+
+        document.getElementById("status-dot").style.background =
+            "#ff4d5a";
 
     }
 
 }
+
+
+/* =========================
+   LOAD GLOBAL TOP 10
+========================= */
 
 async function loadChart(){
 
     try{
 
-        const response=await fetch("http://127.0.0.1:8000/api/charts/global/top10");
-        const songs=await response.json();
+        const response =
+            await fetch(
+                `${API_BASE}/api/charts/global/top10`
+            );
 
-        const chart=document.getElementById("chart-list");
+        if(!response.ok){
+            throw new Error("Chart request failed");
+        }
 
-        chart.innerHTML="";
+        const songs =
+            await response.json();
 
-        songs.forEach(song=>{
 
-            const trend={
-                up:"📈",
-                down:"📉",
-                steady:"➡️"
-            }[song.trend];
+        /* -------------------------
+           GLOBAL #1
+        ------------------------- */
 
-            chart.innerHTML+=`
-                <div class="chart-card">
-                    <div>
-                        <div style="font-size:20px;font-weight:bold;">
-                            #${song.rank} ${song.song}
-                        </div>
+        if(songs.length > 0){
 
-                        <div style="color:#888;">
-                            ${song.artist}
-                        </div>
+            const numberOne =
+                songs[0];
+
+            document.getElementById("hero-song")
+                .textContent =
+                numberOne.song;
+
+            document.getElementById("hero-artist")
+                .textContent =
+                numberOne.artist;
+
+        }
+
+
+        /* -------------------------
+           TOP 10 LIST
+        ------------------------- */
+
+        const chart =
+            document.getElementById("chart-list");
+
+        chart.innerHTML = "";
+
+
+        songs.forEach(song => {
+
+            const trendSymbols = {
+
+                up:"↑",
+                down:"↓",
+                steady:"→"
+
+            };
+
+            const trend =
+                trendSymbols[song.trend] || "→";
+
+
+            const trendClass =
+                song.trend || "steady";
+
+
+            const card =
+                document.createElement("div");
+
+            card.className =
+                "chart-card";
+
+
+            card.innerHTML = `
+
+                <div
+                    class="rank ${song.rank === 1 ? "first" : ""}">
+                    ${String(song.rank).padStart(2,"0")}
+                </div>
+
+
+                <div class="thumb">
+                    ${String(song.artist)
+                        .charAt(0)
+                        .toUpperCase()}
+                </div>
+
+
+                <div>
+
+                    <div class="song-name">
+                        ${song.song}
                     </div>
 
-                    <div style="font-size:28px;">
-                        ${trend}
+                    <div class="artist-name">
+                        ${song.artist}
                     </div>
-                </div>`;
+
+                </div>
+
+
+                <div
+                    class="trend ${trendClass}"
+                    title="Chart movement">
+
+                    ${trend}
+
+                </div>
+
+            `;
+
+
+            chart.appendChild(card);
+
         });
 
-    }catch{
+    }
 
-        document.getElementById("chart-list").innerHTML=
-        "Unable to load chart.";
+    catch(error){
+
+        console.error(
+            "GMC chart error:",
+            error
+        );
+
+        document.getElementById("chart-list")
+            .innerHTML = `
+
+                <div class="chart-card">
+
+                    Unable to load the
+                    global chart.
+
+                </div>
+
+            `;
 
     }
 
 }
 
+
+/* =========================
+   START GMC
+========================= */
+
 checkServer();
 loadChart();
+
 </script>
 
 </body>
 </html>
+```

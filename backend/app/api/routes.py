@@ -1,6 +1,7 @@
 
 from fastapi import APIRouter
 from app.models.artist import ArtistRegistration
+from app.models.arena import ArenaSubmission
 
 router = APIRouter(prefix="/api", tags=["Global Music Chart"])
 
@@ -51,3 +52,12 @@ async def global_top10():
         {"rank": 9, "song": "Monica", "artist": "Kuami Eugene", "trend": "up"},
         {"rank": 10, "song": "Calm Down", "artist": "Rema", "trend": "steady"}
     ]
+@router.post("/arena/submit")
+async def submit_arena_entry(submission: ArenaSubmission):
+    return {
+        "message": "Arena submission received.",
+        "title": submission.title,
+        "artist": submission.artist_name,
+        "media_type": submission.media_type,
+        "status": submission.status
+    }
