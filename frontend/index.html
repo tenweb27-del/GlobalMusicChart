@@ -1,0 +1,226 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Global Music Chart</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+body{
+    background:#080808;
+    color:white;
+}
+
+nav{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:20px 50px;
+    border-bottom:1px solid #222;
+}
+
+.logo{
+    font-size:28px;
+    font-weight:bold;
+    color:#FFD700;
+}
+
+nav ul{
+    display:flex;
+    list-style:none;
+    gap:30px;
+}
+
+nav a{
+    color:white;
+    text-decoration:none;
+}
+
+.hero{
+    min-height:70vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:40px;
+}
+
+.hero h1{
+    font-size:64px;
+    margin-bottom:20px;
+}
+
+.hero p{
+    color:#bbb;
+    max-width:700px;
+    margin:auto;
+    line-height:1.7;
+    margin-bottom:30px;
+}
+
+.btn{
+    display:inline-block;
+    background:#FFD700;
+    color:black;
+    padding:15px 35px;
+    border-radius:40px;
+    text-decoration:none;
+    font-weight:bold;
+}
+
+.status-card{
+    width:90%;
+    max-width:600px;
+    margin:40px auto;
+    background:#121212;
+    padding:30px;
+    border-radius:20px;
+    border:1px solid #222;
+}
+
+.chart-section{
+    width:90%;
+    max-width:900px;
+    margin:60px auto;
+}
+
+.chart-card{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:18px;
+    margin-bottom:12px;
+    background:#121212;
+    border:1px solid #222;
+    border-radius:15px;
+}
+
+footer{
+    text-align:center;
+    padding:40px;
+    color:#777;
+}
+</style>
+</head>
+
+<body>
+
+<nav>
+    <div class="logo">GMC</div>
+
+    <ul>
+        <li><a href="#">Charts</a></li>
+        <li><a href="#">Arena</a></li>
+        <li><a href="#">News</a></li>
+        <li><a href="#">Artists</a></li>
+    </ul>
+</nav>
+
+<section class="hero">
+<div>
+    <h1>Global Music Chart</h1>
+
+    <p>
+        The world's transparent music intelligence platform for artists,
+        fans, labels and culture.
+    </p>
+
+    <a class="btn" href="#">Explore Charts</a>
+</div>
+</section>
+
+<div class="status-card">
+    <h2>Live API Status</h2>
+    <p id="status">Checking server...</p>
+</div>
+
+<section class="chart-section">
+    <h2 style="color:#FFD700;margin-bottom:25px;">Global Top 10</h2>
+
+    <div id="chart-list"></div>
+</section>
+
+<footer>
+Global Music Chart — Foundation Day v0.2
+</footer>
+
+<script>
+async function checkServer(){
+
+    try{
+
+        const response=await fetch("http://127.0.0.1:8000/health");
+        const data=await response.json();
+
+        document.getElementById("status").innerHTML=
+        "Backend Status: "+data.status+" ✅";
+
+    }catch{
+
+        document.getElementById("status").innerHTML=
+        "Backend Offline ❌";
+
+    }
+
+}
+
+async function loadChart(){
+
+    try{
+
+        const response=await fetch("http://127.0.0.1:8000/api/charts/global/top10");
+        const songs=await response.json();
+
+        const chart=document.getElementById("chart-list");
+
+        chart.innerHTML="";
+
+        songs.forEach(song=>{
+
+            const trend={
+                up:"📈",
+                down:"📉",
+                steady:"➡️"
+            }[song.trend];
+
+            chart.innerHTML+=`
+                <div class="chart-card">
+                    <div>
+                        <div style="font-size:20px;font-weight:bold;">
+                            #${song.rank} ${song.song}
+                        </div>
+
+                        <div style="color:#888;">
+                            ${song.artist}
+                        </div>
+                    </div>
+
+                    <div style="font-size:28px;">
+                        ${trend}
+                    </div>
+                </div>`;
+        });
+
+    }catch{
+
+        document.getElementById("chart-list").innerHTML=
+        "Unable to load chart.";
+
+    }
+
+}
+
+checkServer();
+loadChart();
+</script>
+
+</body>
+</html>
