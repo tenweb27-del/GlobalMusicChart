@@ -1,0 +1,59 @@
+[
+  {
+    "id": 6,
+    "title": "Test Freestyle ",
+    "artist_name": "Diamond CHAINz",
+    "media_type": "video",
+    "description": "a freestyle on a track titled danger ",
+    "file_url": "http://127.0.0.1:8000/uploads/1790080027_WhatsApp Video 2026-09-22 at 11.54.42 AM.mp4",
+    "upvotes": 0,
+    "downvotes": 0
+  },
+  {
+    "id": 5,
+    "title": "freestyle ",
+    "artist_name": "Diamond CHAINz",
+    "media_type": "video",
+    "description": "",
+    "file_url": "http://127.0.0.1:8000/uploads/1790079944_WhatsApp Video 2026-09-22 at 11.54.42 AM.mp4",
+    "upvotes": 0,
+    "downvotes": 0
+  },
+  {
+    "id": 4,
+    "title": "Freestyle ",
+    "artist_name": "Diamond CHAINz",
+    "media_type": "video",
+    "description": "",
+    "file_url": "http://127.0.0.1:8000/uploads/1790079872_WhatsApp Video 2026-09-22 at 11.54.42 AM.mp4",
+    "upvotes": 0,
+    "downvotes": 0
+  },
+  {
+    "id": 1,
+    "title": "Street Freestyle",
+    "artist_name": "MC Blaze",
+    "media_type": "video",
+    "file_url": "",
+    "upvotes": 248,
+    "downvotes": 12
+  },
+  {
+    "id": 2,
+    "title": "Drill Challenge",
+    "artist_name": "Nova",
+    "media_type": "video",
+    "file_url": "",
+    "upvotes": 191,
+    "downvotes": 9
+  },
+  {
+    "id": 3,
+    "title": "Raw Rap Battle",
+    "artist_name": "Lyrik X",
+    "media_type": "video",
+    "file_url": "",
+    "upvotes": 327,
+    "downvotes": 15
+  }
+]

@@ -1,0 +1,12 @@
+# Python
+__pycache__/
+*.pyc
+
+# Virtual environment
+.venv/
+
+# Uploads
+backend/uploads/
+
+# Secrets
+backend/.env

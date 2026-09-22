@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GMC Arena Submission</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif;}
+
+body{background:#050505;color:white;}
+
+nav{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:18px 5%;
+background:#0b0b0b;
+border-bottom:1px solid #222;
+}
+
+.logo{
+font-size:28px;
+font-weight:900;
+color:#FFD400;
+}
+
+nav a{
+color:white;
+text-decoration:none;
+margin-left:20px;
+}
+
+.container{
+width:90%;
+max-width:700px;
+margin:50px auto;
+}
+
+h1{
+font-size:42px;
+color:#FFD400;
+margin-bottom:10px;
+}
+
+.subtitle{
+color:#aaa;
+margin-bottom:30px;
+}
+
+form{
+display:flex;
+flex-direction:column;
+gap:18px;
+background:#111;
+padding:30px;
+border-radius:20px;
+border:1px solid #222;
+}
+
+input,select,textarea{
+padding:15px;
+background:#181818;
+border:1px solid #333;
+border-radius:12px;
+color:white;
+font-size:16px;
+}
+
+input[type=file]{
+padding:12px;
+cursor:pointer;
+}
+
+button{
+padding:15px;
+background:#FFD400;
+color:black;
+font-weight:bold;
+border:none;
+border-radius:30px;
+cursor:pointer;
+font-size:16px;
+}
+
+button:hover{
+opacity:.9;
+}
+
+#message{
+margin-top:20px;
+font-weight:bold;
+color:#39ff88;
+}
+
+footer{
+text-align:center;
+padding:40px;
+color:#666;
+}
+</style>
+</head>
+
+<body>
+
+<nav>
+<div class="logo">GMC.</div>
+
+<div>
+<a href="index.html">Home</a>
+<a href="arena.html">Arena</a>
+</div>
+</nav>
+
+<div class="container">
+
+<h1>Upload Your Performance</h1>
+
+<p class="subtitle">
+Submit your freestyle, rap battle or music challenge to The Arena.
+</p>
+
+<form id="arenaForm">
+
+<input type="text" name="artist_name" placeholder="Artist Name" required>
+
+<input type="text" name="title" placeholder="Performance Title" required>
+
+<select name="media_type">
+<option value="video">Video</option>
+<option value="audio">Audio</option>
+</select>
+
+<input type="file" name="media_file" accept="video/*,audio/*" required>
+
+<textarea name="description" rows="5" placeholder="Describe your performance"></textarea>
+
+<button type="submit">Submit Performance</button>
+
+</form>
+
+<div id="message"></div>
+
+</div>
+
+<footer>
+Global Music Chart • The Arena
+</footer>
+
+<script>
+const API="http://127.0.0.1:8000";
+
+document.getElementById("arenaForm").addEventListener("submit", async function(e){
+
+e.preventDefault();
+
+const formData=new FormData(this);
+
+const response=await fetch(`${API}/api/arena/upload`,{
+method:"POST",
+body:formData
+});
+
+const result=await response.json();
+
+document.getElementById("message").innerHTML="✅ "+result.message;
+
+setTimeout(()=>{
+window.location.href="arena.html";
+},1200);
+
+});
+</script>
+
+</body>
+</html>
